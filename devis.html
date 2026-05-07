@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demande de Devis · Dhia Mosbah</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #060a10;
+  --bg2:     #0b1018;
+  --surface: #0f1624;
+  --surface2:#141d2e;
+  --border:  #1a2640;
+  --border2: #243550;
+  --cyan:    #00d4ff;
+  --purple:  #8b5cf6;
+  --green:   #10b981;
+  --orange:  #f59e0b;
+  --pink:    #ec4899;
+  --red:     #ef4444;
+  --text:    #cdd9ef;
+  --muted:   #4a5f80;
+  --mono:    'JetBrains Mono', monospace;
+  --display: 'Syne', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grid bg */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Orbs */
+.orb {
+  position: fixed; border-radius: 50%;
+  filter: blur(100px); opacity: 0.1;
+  pointer-events: none; z-index: 0;
+}
+.orb-1 { width:500px;height:500px;background:var(--cyan);top:-150px;left:-150px; }
+.orb-2 { width:400px;height:400px;background:var(--purple);bottom:-100px;right:-100px; }
+
+/* ── Layout ── */
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ── LEFT PANEL ── */
+.left-panel {
+  padding: 60px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 52px;
+  transition: color 0.2s;
+  letter-spacing: 1px;
+}
+.back-link:hover { color: var(--cyan); }
+
+.panel-eyebrow {
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.panel-eyebrow::before { content:''; width:24px; height:1px; background:var(--cyan); }
+
+.panel-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 20px;
+}
+
+.panel-title .grad {
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.panel-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 380px;
+  margin-bottom: 44px;
+}
+
+.panel-desc strong { color: var(--text); }
+
+/* Info cards */
+.info-cards { display: flex; flex-direction: column; gap: 12px; }
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(15,22,36,0.6);
+}
+
+.ic-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  background: rgba(255,255,255,0.04);
+  flex-shrink: 0;
+}
+
+.ic-label { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; margin-bottom: 3px; }
+.ic-val   { font-size: 13px; color: var(--text); }
+
+/* Progress tracker */
+.progress-track {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.pt-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.pt-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pt-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+
+.pt-step.active { color: var(--text); }
+.pt-step.done   { color: var(--green); }
+
+.pt-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.pt-step.active .pt-dot {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.pt-step.done .pt-dot {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+/* ── RIGHT PANEL ── */
+.right-panel {
+  padding: 60px 56px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Form ── */
+.form-wrapper {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.step-block {
+  display: none;
+  animation: fadeInUp 0.35s ease both;
+}
+.step-block.active { display: block; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.step-header {
+  margin-bottom: 32px;
+}
+
+.step-num {
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.step-title {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.step-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+/* Field groups */
+.field-group {
+  margin-bottom: 22px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.required-star { color: var(--cyan); margin-left: 3px; }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+}
+
+input::placeholder, textarea::placeholder { color: var(--muted); }
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a5f80' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+/* Two columns */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Option cards (click to select) */
+.option-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.option-cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.opt-card {
+  padding: 14px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  user-select: none;
+}
+
+.opt-card:hover {
+  border-color: var(--border2);
+  background: var(--surface2);
+}
+
+.opt-card.selected {
+  border-color: var(--cyan);
+  background: rgba(0,212,255,0.06);
+  box-shadow: 0 0 0 1px var(--cyan);
+}
+
+.opt-icon { font-size: 22px; margin-bottom: 6px; }
+.opt-label { font-size: 12px; color: var(--text); font-weight: 600; }
+.opt-sub   { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+/* Budget slider */
+.budget-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.budget-val {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+.budget-unit { font-size: 12px; color: var(--muted); }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--cyan);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0,212,255,0.4);
+  transition: transform 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.budget-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* Checkbox group */
+.check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.check-item:hover { border-color: var(--border2); }
+.check-item.checked { border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.04); }
+
+.check-box {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 11px;
+  transition: all 0.2s;
+}
+
+.check-item.checked .check-box {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.check-text { font-size: 13px; color: var(--text); }
+.check-sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+/* Error state */
+.field-error {
+  font-size: 11px;
+  color: var(--red);
+  margin-top: 6px;
+  display: none;
+}
+
+input.error, textarea.error, select.error {
+  border-color: var(--red);
+}
+
+/* ── Nav buttons ── */
+.form-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-back:hover { color: var(--text); border-color: var(--text); }
+
+.btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 20px rgba(0,212,255,0.2);
+}
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,212,255,0.35); }
+.btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── Progress bar ── */
+.form-progress {
+  margin-bottom: 40px;
+}
+
+.fp-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.fp-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.fp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── SUCCESS ── */
+.success-screen {
+  display: none;
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeInUp 0.5s ease both;
+}
+
+.success-screen.show { display: block; }
+
+.success-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(16,185,129,0.1);
+  border: 2px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 24px;
+  animation: popIn 0.5s 0.2s ease both;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.success-title {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.success-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto 32px;
+}
+
+.success-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  margin-bottom: 28px;
+  font-size: 12px;
+}
+
+.ss-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ss-row:last-child { border-bottom: none; }
+.ss-key   { color: var(--muted); }
+.ss-val   { color: var(--text); text-align: right; max-width: 60%; }
+
+.success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+.btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: #25d366;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 16px rgba(37,211,102,0.2);
+}
+.btn-wa:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.35); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .page { grid-template-columns: 1fr; }
+  .left-panel {
+    position: static;
+    height: auto;
+    padding: 40px 24px 32px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .back-link { margin-bottom: 28px; }
+  .progress-track { display: none; }
+  .right-panel { padding: 40px 24px 60px; }
+  .field-row { grid-template-columns: 1fr; }
+  .option-cards.cols-3 { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (max-width: 400px) {
+  .option-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="page">
+
+  <!-- ══════ LEFT PANEL ══════ -->
+  <div class="left-panel">
+    <a href="index.html" class="back-link">← Retour</a>
+
+    <div class="panel-eyebrow">DEMANDE DE DEVIS</div>
+
+    <h1 class="panel-title">
+      Décrivez<br>
+      votre <span class="grad">projet</span>
+    </h1>
+
+    <p class="panel-desc">
+      Répondez à quelques questions simples.<br>
+      Je vous reviens avec une <strong>proposition personnalisée</strong>
+      sous <strong>24 heures</strong>.
+    </p>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="ic-icon">⚡</div>
+        <div>
+          <div class="ic-label">RÉPONSE</div>
+          <div class="ic-val">Sous 24 heures</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">🌍</div>
+        <div>
+          <div class="ic-label">DISPONIBILITÉ</div>
+          <div class="ic-val">Tunisie · Remote worldwide</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">✉️</div>
+        <div>
+          <div class="ic-label">EMAIL</div>
+          <div class="ic-val">dhiamosbahdev@gmail.com</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress tracker -->
+    <div class="progress-track">
+      <div class="pt-label">PROGRESSION</div>
+      <div class="pt-steps">
+        <div class="pt-step active" id="ts-1">
+          <div class="pt-dot"></div>
+          <span>Votre profil</span>
+        </div>
+        <div class="pt-step" id="ts-2">
+          <div class="pt-dot"></div>
+          <span>Type de projet</span>
+        </div>
+        <div class="pt-step" id="ts-3">
+          <div class="pt-dot"></div>
+          <span>Détails techniques</span>
+        </div>
+        <div class="pt-step" id="ts-4">
+          <div class="pt-dot"></div>
+          <span>Budget &amp; délai</span>
+        </div>
+        <div class="pt-step" id="ts-5">
+          <div class="pt-dot"></div>
+          <span>Message final</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ RIGHT PANEL ══════ -->
+  <div class="right-panel">
+    <div class="form-wrapper">
+
+      <!-- Progress bar -->
+      <div class="form-progress">
+        <div class="fp-header">
+          <span id="fp-label">ÉTAPE 1 / 5</span>
+          <span id="fp-pct">20%</span>
+        </div>
+        <div class="fp-bar">
+          <div class="fp-fill" id="fp-fill" style="width:20%"></div>
+        </div>
+      </div>
+
+      <!-- ── STEP 1 : Profil ── -->
+      <div class="step-block active" id="step-1">
+        <div class="step-header">
+          <div class="step-num">01 — VOTRE PROFIL</div>
+          <div class="step-title">Qui êtes-vous ?</div>
+          <div class="step-sub">Ces informations me permettront de vous recontacter rapidement.</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label>Prénom <span class="required-star">*</span></label>
+            <input type="text" id="f-prenom" placeholder="ex: Mohamed">
+            <div class="field-error" id="e-prenom">Champ requis</div>
+          </div>
+          <div class="field-group">
+            <label>Nom <span class="required-star">*</span></label>
+            <input type="text" id="f-nom" placeholder="ex: Ben Ali">
+            <div class="field-error" id="e-nom">Champ requis</div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Email professionnel <span class="required-star">*</span></label>
+          <input type="email" id="f-email" placeholder="vous@exemple.tn">
+          <div class="field-error" id="e-email">Email invalide</div>
+        </div>
+
+        <div class="field-group">
+          <label>WhatsApp / Téléphone</label>
+          <input type="tel" id="f-tel" placeholder="+216 XX XXX XXX">
+        </div>
+
+        <div class="field-group">
+          <label>Vous êtes</label>
+          <div class="option-cards cols-3" id="oc-profil">
+            <div class="opt-card" data-val="Particulier" onclick="selectOpt(this,'oc-profil')">
+              <div class="opt-icon">👤</div>
+              <div class="opt-label">Particulier</div>
+            </div>
+            <div class="opt-card" data-val="Startup" onclick="selectOpt(this,'oc-profil')">
+              <div class="opt-icon">🚀</div>
+              <div class="opt-label">Startup</div>
+            </div>
+            <div class="opt-card" data-val="Entreprise" onclick="selectOpt(this,'oc-profil')">
+              <div class="opt-icon">🏢</div>
+              <div class="opt-label">Entreprise</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <span></span>
+          <button class="btn-next" onclick="goTo(2)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2 : Type projet ── -->
+      <div class="step-block" id="step-2">
+        <div class="step-header">
+          <div class="step-num">02 — TYPE DE PROJET</div>
+          <div class="step-title">Quel type de projet ?</div>
+          <div class="step-sub">Sélectionnez la catégorie principale de votre besoin.</div>
+        </div>
+
+        <div class="field-group">
+          <label>Catégorie <span class="required-star">*</span></label>
+          <div class="option-cards" id="oc-type">
+            <div class="opt-card" data-val="Application web Django" onclick="selectOpt(this,'oc-type')">
+              <div class="opt-icon">🌐</div>
+              <div class="opt-label">Application web</div>
+              <div class="opt-sub">Django / Python</div>
+            </div>
+            <div class="opt-card" data-val="API REST / Backend" onclick="selectOpt(this,'oc-type')">
+              <div class="opt-icon">⚙️</div>
+              <div class="opt-label">API REST</div>
+              <div class="opt-sub">DRF / Backend</div>
+            </div>
+            <div class="opt-card" data-val="Intégration IA / ML" onclick="selectOpt(this,'oc-type')">
+              <div class="opt-icon">🤖</div>
+              <div class="opt-label">IA / Machine Learning</div>
+              <div class="opt-sub">YOLO · TF · CV</div>
+            </div>
+            <div class="opt-card" data-val="Dashboard / Data" onclick="selectOpt(this,'oc-type')">
+              <div class="opt-icon">📊</div>
+              <div class="opt-label">Dashboard</div>
+              <div class="opt-sub">Data · Visualisation</div>
+            </div>
+            <div class="opt-card" data-val="Site vitrine" onclick="selectOpt(this,'oc-type')">
+              <div class="opt-icon">🖼️</div>
+              <div class="opt-label">Site vitrine</div>
+              <div class="opt-sub">Présentation</div>
+            </div>
+            <div class="opt-card" data-val="Autre" onclick="selectOpt(this,'oc-type')">
+              <div class="opt-icon">💡</div>
+              <div class="opt-label">Autre</div>
+              <div class="opt-sub">Je préciserai</div>
+            </div>
+          </div>
+          <div class="field-error" id="e-type">Veuillez choisir un type</div>
+        </div>
+
+        <div class="field-group">
+          <label>Nom du projet (optionnel)</label>
+          <input type="text" id="f-projname" placeholder="ex: MonApp, TaqaTech...">
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goTo(1)">← Retour</button>
+          <button class="btn-next" onclick="goTo(3)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3 : Détails techniques ── -->
+      <div class="step-block" id="step-3">
+        <div class="step-header">
+          <div class="step-num">03 — DÉTAILS TECHNIQUES</div>
+          <div class="step-title">Fonctionnalités souhaitées</div>
+          <div class="step-sub">Cochez tout ce qui s'applique à votre projet.</div>
+        </div>
+
+        <div class="field-group">
+          <label>Fonctionnalités (sélection multiple)</label>
+          <div class="check-group" id="cg-features">
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">Authentification / Gestion utilisateurs</div></div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">Base de données + CRUD complet</div></div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">API REST (DRF / JSON)</div></div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">Intégration IA / Machine Learning</div></div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">Tableau de bord / Analytics</div></div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">Interface responsive (mobile)</div></div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">Chatbot / Assistant IA</div></div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box">✓</div>
+              <div><div class="check-text">Déploiement (serveur / cloud)</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Avez-vous déjà un projet existant ?</label>
+          <div class="option-cards cols-3" id="oc-existing">
+            <div class="opt-card" data-val="Non, from scratch" onclick="selectOpt(this,'oc-existing')">
+              <div class="opt-icon">🆕</div>
+              <div class="opt-label">Non</div>
+              <div class="opt-sub">Démarrer de zéro</div>
+            </div>
+            <div class="opt-card" data-val="Oui, à améliorer" onclick="selectOpt(this,'oc-existing')">
+              <div class="opt-icon">🔧</div>
+              <div class="opt-label">Oui</div>
+              <div class="opt-sub">À améliorer</div>
+            </div>
+            <div class="opt-card" data-val="Besoin de conseil" onclick="selectOpt(this,'oc-existing')">
+              <div class="opt-icon">💬</div>
+              <div class="opt-label">Conseil</div>
+              <div class="opt-sub">Orientation</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goTo(2)">← Retour</button>
+          <button class="btn-next" onclick="goTo(4)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4 : Budget & Délai ── -->
+      <div class="step-block" id="step-4">
+        <div class="step-header">
+          <div class="step-num">04 — BUDGET &amp; DÉLAI</div>
+          <div class="step-title">Vos contraintes</div>
+          <div class="step-sub">Aucun engagement — c'est pour adapter ma proposition.</div>
+        </div>
+
+        <div class="field-group">
+          <label>Budget estimé (DT)</label>
+          <div class="budget-display">
+            <div class="budget-val" id="budget-display">500</div>
+            <div class="budget-unit">DT</div>
+          </div>
+          <input type="range" id="budget-range" min="0" max="5000" step="100" value="500"
+                 oninput="updateBudget(this.value)">
+          <div class="budget-labels">
+            <span>0 DT</span>
+            <span>1000</span>
+            <span>2000</span>
+            <span>3000</span>
+            <span>4000</span>
+            <span>5000+</span>
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-top:28px;">
+          <label>Délai souhaité <span class="required-star">*</span></label>
+          <div class="option-cards" id="oc-delai">
+            <div class="opt-card" data-val="Urgent (< 2 semaines)" onclick="selectOpt(this,'oc-delai')">
+              <div class="opt-icon">🔥</div>
+              <div class="opt-label">Urgent</div>
+              <div class="opt-sub">&lt; 2 semaines</div>
+            </div>
+            <div class="opt-card" data-val="1 mois" onclick="selectOpt(this,'oc-delai')">
+              <div class="opt-icon">📅</div>
+              <div class="opt-label">1 mois</div>
+              <div class="opt-sub">Standard</div>
+            </div>
+            <div class="opt-card" data-val="2-3 mois" onclick="selectOpt(this,'oc-delai')">
+              <div class="opt-icon">🗓️</div>
+              <div class="opt-label">2–3 mois</div>
+              <div class="opt-sub">Projet complet</div>
+            </div>
+            <div class="opt-card" data-val="Pas de contrainte" onclick="selectOpt(this,'oc-delai')">
+              <div class="opt-icon">🌊</div>
+              <div class="opt-label">Flexible</div>
+              <div class="opt-sub">Pas de contrainte</div>
+            </div>
+          </div>
+          <div class="field-error" id="e-delai">Veuillez choisir un délai</div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goTo(3)">← Retour</button>
+          <button class="btn-next" onclick="goTo(5)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 5 : Message ── -->
+      <div class="step-block" id="step-5">
+        <div class="step-header">
+          <div class="step-num">05 — MESSAGE FINAL</div>
+          <div class="step-title">Décrivez votre projet</div>
+          <div class="step-sub">Plus vous êtes précis, plus ma proposition sera adaptée.</div>
+        </div>
+
+        <div class="field-group">
+          <label>Description du projet <span class="required-star">*</span></label>
+          <textarea id="f-desc" rows="6"
+            placeholder="Ex: Je veux une application Django pour gérer un stock de produits agricoles avec un tableau de bord, authentification admin, et export PDF..."></textarea>
+          <div class="field-error" id="e-desc">Décrivez votre projet (min. 20 caractères)</div>
+        </div>
+
+        <div class="field-group">
+          <label>Lien de référence (optionnel)</label>
+          <input type="text" id="f-ref" placeholder="https://... (site similaire à ce que vous voulez)">
+        </div>
+
+        <div class="field-group">
+          <label>Comment m'avez-vous trouvé ?</label>
+          <select id="f-source">
+            <option value="">— Sélectionner —</option>
+            <option>Linktree / QR Code</option>
+            <option>GitHub</option>
+            <option>Recommandation</option>
+            <option>Réseau social</option>
+            <option>Autre</option>
+          </select>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goTo(4)">← Retour</button>
+          <button class="btn-next" onclick="submitForm()" id="btn-submit">
+            ✉ Envoyer la demande
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SUCCESS ── -->
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Demande envoyée !</div>
+        <p class="success-sub">
+          Merci pour votre confiance. Je vais analyser votre projet et vous revenir
+          avec une proposition détaillée sous <strong>24 heures</strong>.
+        </p>
+
+        <div class="success-summary" id="success-summary"></div>
+
+        <div class="success-actions">
+          <a id="wa-link" href="#" target="_blank" class="btn-wa">
+            💬 WhatsApp direct
+          </a>
+          <a href="mailto:dhiamosbahdev@gmail.com" class="btn-ghost"
+             style="display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:8px;border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:13px;text-decoration:none;">
+            ✉ Email
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /form-wrapper -->
+  </div><!-- /right-panel -->
+</div><!-- /page -->
+
+<script>
+// ── State ──
+let currentStep = 1;
+const totalSteps = 5;
+
+const data = {
+  prenom: '', nom: '', email: '', tel: '',
+  profil: '', typeProjet: '', projName: '',
+  features: [], existing: '',
+  budget: '500', delai: '',
+  desc: '', ref: '', source: ''
+};
+
+// ── Navigation ──
+function goTo(step) {
+  if (step > currentStep && !validateStep(currentStep)) return;
+
+  document.getElementById('step-' + currentStep)?.classList.remove('active');
+  currentStep = step;
+
+  const stepEl = document.getElementById('step-' + step);
+  if (stepEl) stepEl.classList.add('active');
+
+  updateProgress(step);
+  updateSideTracker(step);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(step) {
+  const pct = Math.round((step / totalSteps) * 100);
+  document.getElementById('fp-fill').style.width = pct + '%';
+  document.getElementById('fp-label').textContent = 'ÉTAPE ' + step + ' / ' + totalSteps;
+  document.getElementById('fp-pct').textContent = pct + '%';
+}
+
+function updateSideTracker(step) {
+  for (let i = 1; i <= totalSteps; i++) {
+    const el = document.getElementById('ts-' + i);
+    if (!el) continue;
+    el.className = 'pt-step';
+    if (i < step) el.classList.add('done');
+    else if (i === step) el.classList.add('active');
+  }
+}
+
+// ── Validation ──
+function validateStep(step) {
+  let ok = true;
+
+  if (step === 1) {
+    ok = check('f-prenom', 'e-prenom', v => v.trim().length > 0) && ok;
+    ok = check('f-nom', 'e-nom', v => v.trim().length > 0) && ok;
+    ok = check('f-email', 'e-email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) && ok;
+  }
+
+  if (step === 2) {
+    const sel = document.querySelector('#oc-type .opt-card.selected');
+    const errEl = document.getElementById('e-type');
+    if (!sel) {
+      errEl.style.display = 'block';
+      ok = false;
+    } else {
+      errEl.style.display = 'none';
+    }
+  }
+
+  if (step === 4) {
+    const sel = document.querySelector('#oc-delai .opt-card.selected');
+    const errEl = document.getElementById('e-delai');
+    if (!sel) {
+      errEl.style.display = 'block';
+      ok = false;
+    } else {
+      errEl.style.display = 'none';
+    }
+  }
+
+  if (step === 5) {
+    ok = check('f-desc', 'e-desc', v => v.trim().length >= 20) && ok;
+  }
+
+  return ok;
+}
+
+function check(fieldId, errId, test) {
+  const field = document.getElementById(fieldId);
+  const errEl = document.getElementById(errId);
+  const valid = test(field.value);
+  field.classList.toggle('error', !valid);
+  errEl.style.display = valid ? 'none' : 'block';
+  return valid;
+}
+
+// ── Option cards ──
+function selectOpt(el, groupId) {
+  document.querySelectorAll('#' + groupId + ' .opt-card')
+    .forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Hide related errors
+  const errMap = { 'oc-type': 'e-type', 'oc-delai': 'e-delai' };
+  if (errMap[groupId]) {
+    document.getElementById(errMap[groupId]).style.display = 'none';
+  }
+}
+
+// ── Checkboxes ──
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+}
+
+// ── Budget slider ──
+function updateBudget(val) {
+  document.getElementById('budget-display').textContent =
+    parseInt(val) >= 5000 ? '5000+' : val;
+}
+
+// ── Submit ──
+function submitForm() {
+  if (!validateStep(5)) return;
+
+  // Collect data
+  data.prenom  = document.getElementById('f-prenom').value.trim();
+  data.nom     = document.getElementById('f-nom').value.trim();
+  data.email   = document.getElementById('f-email').value.trim();
+  data.tel     = document.getElementById('f-tel').value.trim();
+  data.profil  = document.querySelector('#oc-profil .opt-card.selected')?.dataset.val || '—';
+  data.typeProjet = document.querySelector('#oc-type .opt-card.selected')?.dataset.val || '—';
+  data.projName   = document.getElementById('f-projname').value.trim() || '—';
+  data.features   = [...document.querySelectorAll('#cg-features .check-item.checked')]
+                      .map(el => el.querySelector('.check-text').textContent);
+  data.existing   = document.querySelector('#oc-existing .opt-card.selected')?.dataset.val || '—';
+  data.budget     = document.getElementById('budget-display').textContent + ' DT';
+  data.delai      = document.querySelector('#oc-delai .opt-card.selected')?.dataset.val || '—';
+  data.desc       = document.getElementById('f-desc').value.trim();
+  data.ref        = document.getElementById('f-ref').value.trim() || '—';
+  data.source     = document.getElementById('f-source').value || '—';
+
+  // Build WhatsApp message
+  const waTel = '21600000000'; // <-- remplacer par ton numéro réel
+  const waMsg = encodeURIComponent(
+    `Bonjour Dhia ! 👋\n\nJe vous envoie ma demande de devis :\n\n` +
+    `👤 ${data.prenom} ${data.nom} (${data.profil})\n` +
+    `📧 ${data.email}\n` +
+    `🔧 Projet : ${data.typeProjet}\n` +
+    `💰 Budget : ${data.budget}\n` +
+    `⏱ Délai : ${data.delai}\n\n` +
+    `📝 ${data.desc}`
+  );
+  document.getElementById('wa-link').href = `https://wa.me/${waTel}?text=${waMsg}`;
+
+  // Show summary
+  const rows = [
+    ['Nom', `${data.prenom} ${data.nom}`],
+    ['Email', data.email],
+    ['Profil', data.profil],
+    ['Type de projet', data.typeProjet],
+    ['Budget', data.budget],
+    ['Délai', data.delai],
+    ['Fonctionnalités', data.features.length > 0 ? data.features.join(', ') : '—'],
+  ];
+
+  document.getElementById('success-summary').innerHTML = rows.map(([k, v]) =>
+    `<div class="ss-row"><span class="ss-key">${k}</span><span class="ss-val">${v}</span></div>`
+  ).join('');
+
+  // ── Send via Formspree ──
+  // Remplace YOUR_FORM_ID par ton ID Formspree (gratuit sur formspree.io)
+  const FORMSPREE_ID = 'YOUR_FORM_ID';
+  const formBody = new URLSearchParams({
+    '_subject': `Devis - ${data.typeProjet} - ${data.prenom} ${data.nom}`,
+    'Prénom': data.prenom,
+    'Nom': data.nom,
+    'Email': data.email,
+    'Téléphone': data.tel || '—',
+    'Profil': data.profil,
+    'Type de projet': data.typeProjet,
+    'Nom du projet': data.projName,
+    'Fonctionnalités': data.features.join(', ') || '—',
+    'Projet existant': data.existing,
+    'Budget': data.budget,
+    'Délai': data.delai,
+    'Description': data.desc,
+    'Référence': data.ref,
+    'Source': data.source,
+    '_replyto': data.email
+  });
+
+  fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: formBody
+  }).catch(() => {}); // silently fail if not configured
+
+  // Hide form steps, show success
+  document.querySelectorAll('.step-block').forEach(el => el.classList.remove('active'));
+  document.querySelector('.form-progress').style.display = 'none';
+  document.getElementById('success-screen').classList.add('show');
+
+  // Update side tracker
+  for (let i = 1; i <= totalSteps; i++) {
+    const el = document.getElementById('ts-' + i);
+    if (el) { el.className = 'pt-step done'; }
+  }
+}
+
+// Live validation on input
+document.addEventListener('DOMContentLoaded', () => {
+  ['f-prenom','f-nom','f-email','f-desc'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => el.classList.remove('error'));
+  });
+});
+</script>
+</body>
+</html>

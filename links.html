@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhia Mosbah — Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080c14;
+    --surface: #0f1624;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --text: #e8f0fe;
+    --muted: #6b7fa3;
+    --mono: 'Space Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb-1 { width: 400px; height: 400px; background: var(--accent); top: -100px; left: -100px; }
+  .orb-2 { width: 350px; height: 350px; background: var(--accent2); bottom: -80px; right: -80px; }
+  .orb-3 { width: 250px; height: 250px; background: var(--accent3); top: 50%; left: 60%; }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .avatar-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+
+  .avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+  }
+
+  .avatar-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent), var(--accent2), var(--accent3), var(--accent));
+    animation: spin 4s linear infinite;
+    z-index: 0;
+  }
+
+  .avatar-ring::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .status-dot {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent3);
+    border: 2px solid var(--bg);
+    z-index: 2;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .name {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--text) 40%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .bio {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.6;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Tags ── */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .tag-blue  { border-color: rgba(0,212,255,0.3); color: var(--accent); background: rgba(0,212,255,0.06); }
+  .tag-purple{ border-color: rgba(124,58,237,0.3); color: #a78bfa; background: rgba(124,58,237,0.06); }
+  .tag-green { border-color: rgba(16,185,129,0.3); color: var(--accent3); background: rgba(16,185,129,0.06); }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 24px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-text { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; }
+
+  /* ── Link Cards ── */
+  .links { display: flex; flex-direction: column; gap: 12px; }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    text-decoration: none;
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .link-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .link-card:hover {
+    transform: translateX(6px);
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+  }
+
+  .link-card:hover::before { opacity: 1; }
+
+  /* Color variants */
+  .card-blue  { --c: var(--accent); }
+  .card-purple{ --c: #a78bfa; }
+  .card-green { --c: var(--accent3); }
+  .card-orange{ --c: #f59e0b; }
+  .card-pink  { --c: #ec4899; }
+  .card-teal  { --c: #14b8a6; }
+
+  .link-card:hover { border-color: var(--c); box-shadow: -4px 0 0 0 var(--c), 0 8px 30px rgba(0,0,0,0.3); }
+
+  .link-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .link-card:hover .link-icon {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--c);
+  }
+
+  .link-content { flex: 1; min-width: 0; }
+  .link-label { font-size: 15px; font-weight: 600; }
+  .link-desc  { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+
+  .link-arrow {
+    font-size: 16px;
+    color: var(--muted);
+    transition: color 0.2s, transform 0.2s;
+  }
+  .link-card:hover .link-arrow { color: var(--c); transform: translateX(4px); }
+
+  /* Animation delays */
+  .link-card:nth-child(1) { animation-delay: 0.3s; }
+  .link-card:nth-child(2) { animation-delay: 0.4s; }
+  .link-card:nth-child(3) { animation-delay: 0.5s; }
+  .link-card:nth-child(4) { animation-delay: 0.6s; }
+  .link-card:nth-child(5) { animation-delay: 0.7s; }
+  .link-card:nth-child(6) { animation-delay: 0.8s; }
+
+  /* ── CTA Section ── */
+  .cta-section {
+    margin-top: 40px;
+    padding: 28px;
+    border-radius: 18px;
+    border: 1px solid rgba(0,212,255,0.2);
+    background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(124,58,237,0.05));
+    text-align: center;
+    animation: fadeUp 0.7s 0.9s ease both;
+  }
+
+  .cta-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .cta-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 20px rgba(0,212,255,0.2);
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,212,255,0.35);
+  }
+
+  /* ── Stats bar ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin-top: 32px;
+    animation: fadeUp 0.7s 1s ease both;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    animation: fadeUp 0.7s 1.1s ease both;
+  }
+
+  .footer-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .footer-text span { color: var(--accent); }
+
+  /* ── Availability badge ── */
+  .availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(16,185,129,0.3);
+    background: rgba(16,185,129,0.06);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent3);
+    margin-top: 14px;
+  }
+
+  .avail-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent3);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 400px) {
+    .name { font-size: 22px; }
+    .container { padding: 32px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="container">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <div class="avatar">DM</div>
+      <div class="status-dot"></div>
+    </div>
+
+    <div class="name">Dhia Mosbah</div>
+    <div class="title">// Full Stack Developer</div>
+
+    <p class="bio">
+      Je construis des applications web robustes avec Python &amp; Django —
+      de la base de données à l'IA intégrée. Basé à Sidi Bouzid, disponible worldwide.
+    </p>
+
+    <div class="tags">
+      <span class="tag tag-blue">Python / Django</span>
+      <span class="tag tag-purple">Machine Learning</span>
+      <span class="tag tag-green">REST API / DRF</span>
+      <span class="tag tag-blue">Computer Vision</span>
+      <span class="tag tag-purple">Full Stack</span>
+    </div>
+
+    <div class="availability">
+      <div class="avail-dot"></div>
+      Disponible pour projets — Remote &amp; Tunisie
+    </div>
+  </div>
+
+  <!-- ── DIVIDER ── -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">LIENS OFFICIELS</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ── LINKS ── -->
+  <div class="links">
+
+    <a href="index.html" class="link-card card-blue">
+      <div class="link-icon">🌐</div>
+      <div class="link-content">
+        <div class="link-label">Portfolio &amp; Projets</div>
+        <div class="link-desc">dhia-mosbah.dev · Django · ML · APIs</div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a href="https://github.com/dhiamosbahdev" class="link-card card-purple" target="_blank">
+      <div class="link-icon">🐙</div>
+      <div class="link-content">
+        <div class="link-label">GitHub</div>
+        <div class="link-desc">@dhiamosbahdev · Code source public</div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a href="mailto:dhiamosbahdev@gmail.com" class="link-card card-green">
+      <div class="link-icon">✉️</div>
+      <div class="link-content">
+        <div class="link-label">Email professionnel</div>
+        <div class="link-desc">dhiamosbahdev@gmail.com</div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a href="devis.html" class="link-card card-orange">
+      <div class="link-icon">📋</div>
+      <div class="link-content">
+        <div class="link-label">Demander un devis</div>
+        <div class="link-desc">Formulaire · Réponse sous 24h</div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a href="#" class="link-card card-teal">
+      <div class="link-icon">💬</div>
+      <div class="link-content">
+        <div class="link-label">WhatsApp Direct</div>
+        <div class="link-desc">Discutons de votre projet</div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a href="#" class="link-card card-pink">
+      <div class="link-icon">📄</div>
+      <div class="link-content">
+        <div class="link-label">Télécharger mon CV</div>
+        <div class="link-desc">PDF · Full Stack · ML · Django</div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+  </div>
+
+  <!-- ── CTA SECTION ── -->
+  <div class="cta-section">
+    <div class="cta-title">🚀 Prêt à démarrer votre projet ?</div>
+    <div class="cta-sub">Web App · API · Dashboard · IA intégrée · Tunisie &amp; Remote</div>
+    <a href="mailto:dhiamosbahdev@gmail.com" class="cta-btn">
+      ✉️ Écrivez-moi maintenant
+    </a>
+  </div>
+
+  <!-- ── STATS ── -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">Projets Django</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Modèles ML/AI</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Remote Ready</div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <div class="footer-text">
+      Construit avec <span>❤</span> par <span>Dhia Mosbah</span> · Sidi Bouzid, Tunisia
+    </div>
+    <div class="footer-text" style="margin-top:6px; opacity:0.5;">
+      Python · Django · ML · Computer Vision · DRF
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

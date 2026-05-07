@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhia Mosbah · Full Stack Developer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Clash+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #060a10;
+  --bg2:       #0b1018;
+  --surface:   #0f1624;
+  --surface2:  #141d2e;
+  --border:    #1a2640;
+  --border2:   #243550;
+  --cyan:      #00d4ff;
+  --purple:    #8b5cf6;
+  --green:     #10b981;
+  --orange:    #f59e0b;
+  --pink:      #ec4899;
+  --text:      #cdd9ef;
+  --muted:     #4a5f80;
+  --mono:      'JetBrains Mono', monospace;
+  --display:   'Clash Display', 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Scanline overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Grid bg ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+  background: rgba(6,10,16,0.85);
+  backdrop-filter: blur(12px);
+  padding: 0 40px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 1px;
+}
+
+.nav-logo span { color: var(--muted); }
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -4px;
+  width: 0; height: 1px;
+  background: var(--cyan);
+  transition: width 0.2s;
+}
+
+.nav-links a:hover { color: var(--cyan); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+  padding: 7px 18px;
+  border-radius: 6px;
+  border: 1px solid var(--cyan);
+  color: var(--cyan) !important;
+  font-size: 12px;
+  text-decoration: none;
+  transition: background 0.2s !important;
+}
+
+.nav-cta:hover { background: rgba(0,212,255,0.08) !important; }
+.nav-cta::after { display: none !important; }
+
+/* ── MAIN ── */
+main { position: relative; z-index: 1; padding-top: 56px; }
+
+section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+
+/* ── HERO ── */
+#hero {
+  min-height: calc(100vh - 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--green);
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  animation: fadeLeft 0.6s ease both;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--green);
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(42px, 7vw, 80px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  margin-bottom: 8px;
+  animation: fadeLeft 0.6s 0.1s ease both;
+}
+
+.hero-title .line1 { color: var(--text); }
+.hero-title .line2 {
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 540px;
+  margin: 20px 0 36px;
+  line-height: 1.7;
+  animation: fadeLeft 0.6s 0.2s ease both;
+}
+
+.hero-sub strong { color: var(--text); }
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  animation: fadeLeft 0.6s 0.3s ease both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 24px rgba(0,212,255,0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,212,255,0.35);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* Terminal widget */
+.hero-terminal {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: fadeRight 0.8s 0.4s ease both;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.05);
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-red    { background: #ff5f57; }
+.t-yellow { background: #ffbd2e; }
+.t-green  { background: #28c840; }
+
+.terminal-title {
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: 8px;
+  letter-spacing: 1px;
+}
+
+.terminal-body {
+  padding: 18px;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.t-line { display: block; }
+.t-prompt { color: var(--green); }
+.t-cmd    { color: var(--text); }
+.t-out    { color: var(--muted); padding-left: 14px; }
+.t-key    { color: var(--cyan); }
+.t-val    { color: var(--orange); }
+.t-str    { color: var(--purple); }
+.t-cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--cyan);
+  vertical-align: middle;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+/* ── SECTION HEADERS ── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── SKILLS ── */
+#skills { border-top: 1px solid var(--border); }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.skill-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.skill-group:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+}
+
+.skill-group-title {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.skill-group-title span { font-size: 16px; }
+
+.skill-items { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.skill-pill {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 1px solid;
+}
+
+.pill-cyan   { border-color: rgba(0,212,255,0.25); color: var(--cyan);   background: rgba(0,212,255,0.05); }
+.pill-purple { border-color: rgba(139,92,246,0.25); color: #a78bfa; background: rgba(139,92,246,0.05); }
+.pill-green  { border-color: rgba(16,185,129,0.25); color: var(--green);  background: rgba(16,185,129,0.05); }
+.pill-orange { border-color: rgba(245,158,11,0.25); color: var(--orange); background: rgba(245,158,11,0.05); }
+.pill-pink   { border-color: rgba(236,72,153,0.25); color: var(--pink);   background: rgba(236,72,153,0.05); }
+
+/* ── PROJECTS ── */
+#projects { border-top: 1px solid var(--border); }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  cursor: default;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--cyan));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border2);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+.project-card:hover::before { transform: scaleX(1); }
+
+.project-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.project-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+}
+
+.project-status {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.status-done  { background: rgba(16,185,129,0.1); color: var(--green);  border: 1px solid rgba(16,185,129,0.2); }
+.status-live  { background: rgba(0,212,255,0.1);  color: var(--cyan);   border: 1px solid rgba(0,212,255,0.2);  }
+.status-wip   { background: rgba(245,158,11,0.1); color: var(--orange); border: 1px solid rgba(245,158,11,0.2); }
+
+.project-name {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.project-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+
+.p-tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.project-links { display: flex; gap: 10px; }
+
+.p-link {
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.p-link:hover { color: var(--cyan); }
+
+/* ── EXPERIENCE ── */
+#experience { border-top: 1px solid var(--border); }
+
+.timeline { position: relative; padding-left: 28px; }
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -32px;
+  top: 6px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.tl-date {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.tl-title {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.tl-org {
+  font-size: 12px;
+  color: var(--cyan);
+  margin-bottom: 10px;
+}
+
+.tl-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+/* ── CONTACT ── */
+#contact {
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.contact-title {
+  font-family: var(--display);
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--text) 30%, var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.contact-sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 36px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+.contact-cards {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 13px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.contact-card:hover {
+  border-color: var(--cyan);
+  transform: translateY(-2px);
+}
+
+.cc-icon { font-size: 20px; }
+.cc-label { font-size: 11px; color: var(--muted); margin-bottom: 2px; letter-spacing: 1px; }
+.cc-val   { font-size: 13px; color: var(--text); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-left { font-size: 12px; color: var(--muted); }
+.footer-left span { color: var(--cyan); }
+.footer-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.footer-link {
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--cyan); }
+
+/* ── Floating dots decoration ── */
+.dot-grid {
+  position: absolute;
+  right: -20px;
+  top: 40px;
+  display: grid;
+  grid-template-columns: repeat(8, 14px);
+  gap: 8px;
+  opacity: 0.15;
+}
+
+.dot-grid span {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--cyan);
+  display: block;
+}
+
+/* ── Animations ── */
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeRight {
+  from { opacity: 0; transform: translate(24px, -50%); }
+  to   { opacity: 1; transform: translate(0, -50%); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { gap: 16px; }
+  .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+  section { padding: 60px 20px; }
+  .hero-terminal { display: none; }
+  #hero { min-height: auto; padding-top: 40px; }
+  .hero-title { font-size: 36px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  footer { padding: 20px; flex-direction: column; text-align: center; }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <span>~/</span>dhia-mosbah
+  </div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#experience">Parcours</a></li>
+    <li><a href="links.html">🔗 Links</a></li>
+    <li><a href="devis.html" class="nav-cta">📋 Devis</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section id="hero">
+  <div class="dot-grid" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="hero-eyebrow">DISPONIBLE POUR MISSIONS</div>
+
+  <h1 class="hero-title">
+    <div class="line1">Dhia Mosbah</div>
+    <div class="line2">Full Stack Dev.</div>
+  </h1>
+
+  <p class="hero-sub">
+    Je construis des applications web <strong>robustes et intelligentes</strong>
+    avec Python &amp; Django — du backend solide à l'IA intégrée.
+    Basé à <strong>Sidi Bouzid, Tunisie</strong> · Remote worldwide.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#projects" class="btn-primary">▶ Voir mes projets</a>
+    <a href="https://github.com/dhiamosbahdev" target="_blank" class="btn-ghost">🐙 GitHub</a>
+    <a href="devis.html" class="btn-ghost">📋 Demander un devis</a>
+  </div>
+
+  <!-- Terminal -->
+  <div class="hero-terminal">
+    <div class="terminal-bar">
+      <span class="t-dot t-red"></span>
+      <span class="t-dot t-yellow"></span>
+      <span class="t-dot t-green"></span>
+      <span class="terminal-title">dhia@dev ~ bash</span>
+    </div>
+    <div class="terminal-body">
+      <span class="t-line"><span class="t-prompt">❯</span> <span class="t-cmd">python manage.py about_me</span></span>
+      <span class="t-line t-out">{</span>
+      <span class="t-line t-out">  <span class="t-key">"name"</span>: <span class="t-str">"Dhia Mosbah"</span>,</span>
+      <span class="t-line t-out">  <span class="t-key">"role"</span>: <span class="t-str">"Full Stack Developer"</span>,</span>
+      <span class="t-line t-out">  <span class="t-key">"stack"</span>: [<span class="t-str">"Python"</span>, <span class="t-str">"Django"</span>, <span class="t-str">"DRF"</span>],</span>
+      <span class="t-line t-out">  <span class="t-key">"ai"</span>: [<span class="t-str">"YOLO"</span>, <span class="t-str">"TensorFlow"</span>, <span class="t-str">"CV"</span>],</span>
+      <span class="t-line t-out">  <span class="t-key">"location"</span>: <span class="t-str">"Sidi Bouzid, TN"</span>,</span>
+      <span class="t-line t-out">  <span class="t-key">"remote"</span>: <span class="t-val">true</span>,</span>
+      <span class="t-line t-out">  <span class="t-key">"available"</span>: <span class="t-val">true</span></span>
+      <span class="t-line t-out">}</span>
+      <span class="t-line" style="margin-top:8px;"><span class="t-prompt">❯</span> <span class="t-cursor"></span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     SKILLS
+══════════════════════════════ -->
+<section id="skills">
+  <div class="section-label">01 — COMPÉTENCES TECHNIQUES</div>
+
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <div class="skill-group-title"><span>🐍</span> Backend</div>
+      <div class="skill-items">
+        <span class="skill-pill pill-cyan">Python</span>
+        <span class="skill-pill pill-cyan">Django</span>
+        <span class="skill-pill pill-cyan">Django REST Framework</span>
+        <span class="skill-pill pill-cyan">JWT Auth</span>
+        <span class="skill-pill pill-cyan">PostgreSQL</span>
+        <span class="skill-pill pill-cyan">MySQL</span>
+        <span class="skill-pill pill-cyan">SQLite</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal" style="transition-delay:0.1s">
+      <div class="skill-group-title"><span>🤖</span> Intelligence Artificielle</div>
+      <div class="skill-items">
+        <span class="skill-pill pill-purple">YOLOv8</span>
+        <span class="skill-pill pill-purple">TensorFlow/Keras</span>
+        <span class="skill-pill pill-purple">OpenCV</span>
+        <span class="skill-pill pill-purple">Scikit-learn</span>
+        <span class="skill-pill pill-purple">Random Forest</span>
+        <span class="skill-pill pill-purple">CNN</span>
+        <span class="skill-pill pill-purple">COCO Dataset</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal" style="transition-delay:0.2s">
+      <div class="skill-group-title"><span>🌐</span> Frontend</div>
+      <div class="skill-items">
+        <span class="skill-pill pill-green">HTML / CSS</span>
+        <span class="skill-pill pill-green">JavaScript</span>
+        <span class="skill-pill pill-green">AJAX</span>
+        <span class="skill-pill pill-green">Bootstrap 5</span>
+        <span class="skill-pill pill-green">Templates Django</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal" style="transition-delay:0.3s">
+      <div class="skill-group-title"><span>⚙️</span> Outils &amp; DevOps</div>
+      <div class="skill-items">
+        <span class="skill-pill pill-orange">Git / GitHub</span>
+        <span class="skill-pill pill-orange">VS Code</span>
+        <span class="skill-pill pill-orange">Docker (bases)</span>
+        <span class="skill-pill pill-orange">virtualenv</span>
+        <span class="skill-pill pill-orange">Linux / CMD</span>
+        <span class="skill-pill pill-orange">ReportLab</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal" style="transition-delay:0.4s">
+      <div class="skill-group-title"><span>🔗</span> APIs &amp; Intégrations</div>
+      <div class="skill-items">
+        <span class="skill-pill pill-pink">Claude API</span>
+        <span class="skill-pill pill-pink">OpenAI API</span>
+        <span class="skill-pill pill-pink">Gemini API</span>
+        <span class="skill-pill pill-pink">REST APIs</span>
+        <span class="skill-pill pill-pink">TF-IDF / Cosine</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal" style="transition-delay:0.5s">
+      <div class="skill-group-title"><span>💬</span> Langues</div>
+      <div class="skill-items">
+        <span class="skill-pill pill-cyan">Arabe (natif)</span>
+        <span class="skill-pill pill-green">Français (avancé)</span>
+        <span class="skill-pill pill-orange">Anglais (technique)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     PROJECTS
+══════════════════════════════ -->
+<section id="projects">
+  <div class="section-label">02 — PROJETS RÉALISÉS</div>
+
+  <div class="projects-grid">
+
+    <div class="project-card reveal" style="--card-accent: var(--cyan);">
+      <div class="project-header">
+        <div class="project-icon">🏛️</div>
+        <span class="project-status status-live">ACTIF</span>
+      </div>
+      <div class="project-name">ATFP — Gestion Formations</div>
+      <p class="project-desc">
+        Plateforme web Django + REST API pour la gestion des formations professionnelles de l'ATFP. Architecture MVT, MySQL, JWT, dashboard admin.
+      </p>
+      <div class="project-tags">
+        <span class="p-tag">Django</span>
+        <span class="p-tag">DRF</span>
+        <span class="p-tag">MySQL</span>
+        <span class="p-tag">JWT</span>
+        <span class="p-tag">REST API</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/dhiamosbahdev/atfp-miniprojet" target="_blank" class="p-link">🐙 GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="--card-accent: var(--purple); transition-delay: 0.1s;">
+      <div class="project-header">
+        <div class="project-icon">📚</div>
+        <span class="project-status status-live">ACTIF</span>
+      </div>
+      <div class="project-name">Livres — Bookstore IA</div>
+      <p class="project-desc">
+        Application Django complète avec recommandations par TF-IDF/cosine, système de recommandation TensorFlow/Keras, chatbot multilingue et API REST/DRF avec JWT.
+      </p>
+      <div class="project-tags">
+        <span class="p-tag">Django</span>
+        <span class="p-tag">TensorFlow</span>
+        <span class="p-tag">DRF</span>
+        <span class="p-tag">NLP</span>
+        <span class="p-tag">JWT</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/dhiamosbahdev" target="_blank" class="p-link">🐙 GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="--card-accent: var(--green); transition-delay: 0.2s;">
+      <div class="project-header">
+        <div class="project-icon">👁️</div>
+        <span class="project-status status-done">TERMINÉ</span>
+      </div>
+      <div class="project-name">Object Detection Django</div>
+      <p class="project-desc">
+        App Django intégrant YOLOv8 + OpenCV + PyTorch pour la détection d'objets en temps réel. Résolution de compatibilité Python 3.14→3.11 et routing Django.
+      </p>
+      <div class="project-tags">
+        <span class="p-tag">YOLOv8</span>
+        <span class="p-tag">OpenCV</span>
+        <span class="p-tag">PyTorch</span>
+        <span class="p-tag">Django</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/dhiamosbahdev/detection_objet" target="_blank" class="p-link">🐙 GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="--card-accent: var(--orange); transition-delay: 0.15s;">
+      <div class="project-header">
+        <div class="project-icon">🤖</div>
+        <span class="project-status status-done">TERMINÉ</span>
+      </div>
+      <div class="project-name">AI Chatbot Django</div>
+      <p class="project-desc">
+        Chatbot intelligent intégré dans Django avec support multilingue (FR/AR/EN), connexion aux APIs LLM (Claude, OpenAI, Gemini).
+      </p>
+      <div class="project-tags">
+        <span class="p-tag">Django</span>
+        <span class="p-tag">Claude API</span>
+        <span class="p-tag">OpenAI</span>
+        <span class="p-tag">NLP</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/dhiamosbahdev/ai-chatbot-django" target="_blank" class="p-link">🐙 GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="--card-accent: var(--pink); transition-delay: 0.25s;">
+      <div class="project-header">
+        <div class="project-icon">✍️</div>
+        <span class="project-status status-done">TERMINÉ</span>
+      </div>
+      <div class="project-name">MNIST Digit Recognition</div>
+      <p class="project-desc">
+        CNN Keras avec 99.17% de précision sur MNIST. Converti en app Django complète avec upload d'image, prédiction en temps réel et historique.
+      </p>
+      <div class="project-tags">
+        <span class="p-tag">CNN</span>
+        <span class="p-tag">Keras</span>
+        <span class="p-tag">TensorFlow</span>
+        <span class="p-tag">99.17% acc</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/dhiamosbahdev" target="_blank" class="p-link">🐙 GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="--card-accent: #14b8a6; transition-delay: 0.3s;">
+      <div class="project-header">
+        <div class="project-icon">✅</div>
+        <span class="project-status status-done">TERMINÉ</span>
+      </div>
+      <div class="project-name">Task Flow Django</div>
+      <p class="project-desc">
+        Application de gestion de tâches Django avec authentification, CRUD complet, interface Bootstrap 5 responsive et déploiement local.
+      </p>
+      <div class="project-tags">
+        <span class="p-tag">Django</span>
+        <span class="p-tag">Bootstrap 5</span>
+        <span class="p-tag">CRUD</span>
+        <span class="p-tag">Auth</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/dhiamosbahdev/Task-Flow-django" target="_blank" class="p-link">🐙 GitHub →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     EXPERIENCE
+══════════════════════════════ -->
+<section id="experience">
+  <div class="section-label">03 — PARCOURS</div>
+
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="tl-date">2025–2026 — EN COURS</div>
+      <div class="tl-title">Projet de Fin d'Études (PFE)</div>
+      <div class="tl-org">ISET Sidi Bouzid · Encadrant : M. Muhammed Gharbi</div>
+      <p class="tl-desc">
+        Développement d'une plateforme web de gestion des formations professionnelles pour l'ATFP. Stack : Django, Python 3, MySQL, REST API, JWT.
+      </p>
+      <div class="tl-tags">
+        <span class="skill-pill pill-cyan">Django</span>
+        <span class="skill-pill pill-purple">REST API</span>
+        <span class="skill-pill pill-green">MySQL</span>
+        <span class="skill-pill pill-orange">JWT</span>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:0.1s">
+      <div class="tl-date">2026 — EN COURS</div>
+      <div class="tl-title">Formation Full Stack Python/Django</div>
+      <div class="tl-org">Cyber Parc Sidi Bouzid</div>
+      <p class="tl-desc">
+        Programme intensif couvrant Django MVT, DRF, JWT, Machine Learning, Computer Vision (YOLO, OpenCV, TensorFlow), intégration APIs IA.
+      </p>
+      <div class="tl-tags">
+        <span class="skill-pill pill-cyan">Django</span>
+        <span class="skill-pill pill-purple">ML/AI</span>
+        <span class="skill-pill pill-green">DRF</span>
+        <span class="skill-pill pill-orange">Computer Vision</span>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:0.2s">
+      <div class="tl-date">AVRIL 2026</div>
+      <div class="tl-title">Conférence IC2SE2026</div>
+      <div class="tl-org">Hammamet, Tunisie</div>
+      <p class="tl-desc">
+        Participation à la conférence internationale d'ingénierie IC2SE2026. Exploration de la pédagogie "sponge vs. sieve" appliquée à l'apprentissage de l'IA.
+      </p>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:0.3s">
+      <div class="tl-date">2015</div>
+      <div class="tl-title">Licence Nationale</div>
+      <div class="tl-org">Réseaux et Services Informatiques</div>
+      <p class="tl-desc">
+        Formation académique en réseaux informatiques, systèmes, et services. Base solide pour la reconversion en développement web et intelligence artificielle.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     CONTACT
+══════════════════════════════ -->
+<section id="contact">
+  <div class="section-label">04 — CONTACT</div>
+
+  <h2 class="contact-title">Travaillons ensemble</h2>
+  <p class="contact-sub">
+    Vous avez un projet web, une app Django, ou besoin d'intégrer de l'IA ?
+    Je réponds sous 24h.
+  </p>
+
+  <div class="contact-cards">
+    <a href="mailto:dhiamosbahdev@gmail.com" class="contact-card">
+      <span class="cc-icon">✉️</span>
+      <div>
+        <div class="cc-label">EMAIL</div>
+        <div class="cc-val">dhiamosbahdev@gmail.com</div>
+      </div>
+    </a>
+    <a href="https://github.com/dhiamosbahdev" target="_blank" class="contact-card">
+      <span class="cc-icon">🐙</span>
+      <div>
+        <div class="cc-label">GITHUB</div>
+        <div class="cc-val">@dhiamosbahdev</div>
+      </div>
+    </a>
+    <a href="links.html" class="contact-card">
+      <span class="cc-icon">🔗</span>
+      <div>
+        <div class="cc-label">TOUS MES LIENS</div>
+        <div class="cc-val">Linktree · Réseaux · CV</div>
+      </div>
+    </a>
+  </div>
+
+  <a href="devis.html" class="btn-primary" style="font-size:15px; padding:15px 36px;">
+    📋 Demander un devis gratuit
+  </a>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-left">
+    © 2026 <span>Dhia Mosbah</span> · Sidi Bouzid, Tunisie
+  </div>
+  <div class="footer-right">
+    <a href="links.html" class="footer-link">🔗 Links</a>
+    <a href="devis.html" class="footer-link">📋 Devis</a>
+    <a href="https://github.com/dhiamosbahdev" target="_blank" class="footer-link">🐙 GitHub</a>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth nav highlight
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--cyan)' : '';
+  });
+});
+</script>
+
+</body>
+</html>
